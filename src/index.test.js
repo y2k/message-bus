@@ -15,11 +15,11 @@ describe("Worker", () => {
 		await worker.stop();
 	});
 
-	it("should return Hello World", async () => {
+	it("should return right response", async () => {
 		const resp = await worker.fetch();
 		if (resp) {
 			const text = await resp.text();
-			expect(text).toMatchInlineSnapshot(`"Hello World!"`);
+			expect(text).toMatchInlineSnapshot(`"Hello from Y2k"`);
 		}
 	});
 });
