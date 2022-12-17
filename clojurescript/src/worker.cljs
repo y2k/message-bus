@@ -22,4 +22,5 @@
                    "\n\\ headers: "
                    (->>
                     (vec event.request.headers)
-                    (reduce (fn [a [k v]] (assoc a (keyword k) v)) {})))))))
+                    (reduce (fn [a [k v]] (assoc a (keyword k) v)) {})
+                    ))))))
