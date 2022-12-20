@@ -18,33 +18,23 @@
     ;;   return Response.json(results)
     ;; }
 
-(js/addEventListener
+#_(js/addEventListener
  "fetch"
  (fn [event]
    (->
-    (.prepare js/MESSAGE_LOG "SELECT * FROM log")
-    (.all)
-    (.then (fn [x] (js/Response.json x)))
+    #_(.prepare js/MESSAGE_LOG "SELECT * FROM log")
+    #_(.all)
+    (js/Promise.resolve 0)
+    (.then (fn [x] (js/Response.json "hello")))
     (.then (fn [x] (.respondWith event x)))
     )
    ))
 
-
-
-
-   #_(.respondWith
-    event
-    (js/Response.json (clj->js {:a 1}))
-    ;; (js/Response. (str
-    ;;                "request: " event.request
-    ;;                "\n\\ request.url: " event.request.url
-    ;;                "\n\\ isTrusted: " event.isTrusted
-    ;;                "\n\\ body: " event.request.body
-    ;;                "\n\\ bodyUsed: " event.request.bodyUsed
-    ;;                "\n\\ headers: "
-    ;;                (->>
-    ;;                 (vec event.request.headers)
-    ;;                 (reduce (fn [a [k v]] (assoc a (keyword k) v)) {})
-    ;;                 )))
-
-   )
+(js/addEventListener
+ "fetch"
+  (fn [event]
+    (.respondWith
+      event
+      #_(js/Response.json (.get js/MESSAGES "foo"))
+      (js/Response.json js/MESSAGE_LOG)
+      )))

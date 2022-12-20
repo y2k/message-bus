@@ -2,13 +2,18 @@ name = "message-bus"
 type = "javascript"
 route = ''
 zone_id = ''
-usage_model = 'bundled'
+usage_model = ''
 compatibility_flags = []
 workers_dev = true
 compatibility_date = "2022-12-17"
 
-[[ d1_databases ]]
-binding = "MESSAGE_LOG"
-database_name = "message_log"
-database_id = "240d553d-ed24-46e7-b70f-ec6dadab8afa"
+kv_namespaces = [ 
+    { binding = "MESSAGES", id = "9205a9b7ec0949bda0ce222b5f6f367c", preview_id = "7ba9a6c8d66f452aabd3f98936e1a04e" } 
+]
+
+d1_databases = [
+    { binding = "MESSAGE_LOG", database_name = "message_log", database_id = "240d553d-ed24-46e7-b70f-ec6dadab8afa" },
+]
+
 preview_database_id = "dcf2bba9-8fde-4a02-8542-b1a8526059c2"
+
