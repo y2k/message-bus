@@ -2,7 +2,7 @@ name = "message-bus"
 type = "javascript"
 route = ''
 zone_id = ''
-usage_model = ''
+usage_model = 'bundled'
 compatibility_flags = []
 workers_dev = true
 compatibility_date = "2022-12-17"
@@ -12,14 +12,12 @@ kv_namespaces = [
 ]
 
 d1_databases = [
-    { binding = "MESSAGE_LOG", database_name = "message_log", database_id = "240d553d-ed24-46e7-b70f-ec6dadab8afa" },
+    { binding = "MESSAGE_LOG", database_name = "message_log", database_id = "240d553d-ed24-46e7-b70f-ec6dadab8afa", preview_database_id = "dcf2bba9-8fde-4a02-8542-b1a8526059c2" },
 ]
-
-preview_database_id = "dcf2bba9-8fde-4a02-8542-b1a8526059c2"
 
 [build]
 cwd = "./dist"
-command = "npm run build"
+command = "yarn build"
 upload.format = "modules"
 upload.main = "worker.js"
 upload.rules = [{ type = "ESModule", globs = ["**/*.js"] }]

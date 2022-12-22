@@ -33,12 +33,12 @@
 (def eventHandlers
  #js {:fetch
       (fn [request env]
-        (js/Response. (str "ML:" (js/Object.keys env)))
-        #_(->
+        #_(js/Response. (str "ML:" (js/Object.keys env)))
+        (->
          env.MESSAGE_LOG
          (.prepare "SELECT * FROM log")
          (.all)
-         (.then (js/Response.))))})
+         (.then (fn [x] (js/Response.json x.results)))))})
 
 #_(def ^:export fetch
   (fn [req]
