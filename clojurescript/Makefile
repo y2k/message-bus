@@ -1,6 +1,9 @@
 build:
 	clj -M -m cljs.main --optimizations advanced --output-to ../src/index.js -c worker
 
+nbuild:
+	clj -M -m cljs.main -co '{:language-out :ecmascript5}'  --optimizations advanced --output-to ../src/index.js -c worker.main
+
 watch:
 	clj -M -m cljs.main -w src --optimizations advanced --output-to ../src/index.js -c worker
 
@@ -15,4 +18,4 @@ watch:
 # old-build:
 # 	clj -M -m cljs.main --target node --optimizations advanced --output-to index.js -c worker
 
-.PHONE: repl old-build build
+.PHONE: nbuild watch repl old-build build

@@ -17,3 +17,10 @@ d1_databases = [
 
 preview_database_id = "dcf2bba9-8fde-4a02-8542-b1a8526059c2"
 
+[build]
+cwd = "./dist"
+command = "npm run build"
+upload.format = "modules"
+upload.main = "worker.js"
+upload.rules = [{ type = "ESModule", globs = ["**/*.js"] }]
+

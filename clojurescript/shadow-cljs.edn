@@ -1,0 +1,6 @@
+{:source-paths ["src/main"]
+ :dependencies []
+ :builds       {:worker {:target     :esm
+                         :output-dir "dist"
+                         :modules    {:worker {:exports {default lispmachine.worker/eventHandlers}
+                                               }}}}}

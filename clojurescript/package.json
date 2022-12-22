@@ -1,0 +1,11 @@
+{
+  "name": "lispmachine",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "shadow-cljs": "^2.12.5"
+  },
+  "scripts": {
+    "build": "shadow-cljs compile worker"
+  }
+}

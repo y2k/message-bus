@@ -1,4 +1,4 @@
-(ns worker)
+(ns lispmachine.worker)
 
 ; async fetch(request, env, ctx) {
 ; 	return new Response("Hello from Y2k");
@@ -30,7 +30,21 @@
     )
    ))
 
-(js/addEventListener
+(def eventHandlers
+ #js {:fetch
+      (fn [request env]
+        (js/Response. (str "ML:" (js/Object.keys env)))
+        #_(->
+         env.MESSAGE_LOG
+         (.prepare "SELECT * FROM log")
+         (.all)
+         (.then (js/Response.))))})
+
+#_(def ^:export fetch
+  (fn [req]
+    (js/Response. "hello world")))
+
+#_(js/addEventListener
  "fetch"
   (fn [event]
     (.respondWith
