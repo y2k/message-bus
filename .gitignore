@@ -171,3 +171,5 @@ dist
 .dev.vars
 .shadow-cljs/
 index.js
+.DS_Store
+
