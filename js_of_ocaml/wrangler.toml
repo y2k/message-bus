@@ -8,9 +8,8 @@ workers_dev = true
 compatibility_date = "2022-12-27"
 
 [build]
-cwd = "./"
-watch_dir = "./"
-command = "dune build --profile=release && cp -f _build/default/main.bc.js dist/index.js"
-upload.main = "index.js"
+command = "dune build --profile=release"
+upload.dir = "_build/default/src"
+upload.main = "main.bc.js"
 upload.format = "modules"
 upload.rules = [{ type = "ESModule", globs = ["**/*.js"] }]
