@@ -1,0 +1,16 @@
+name = "delete-messages-bot"
+type = "javascript"
+route = ''
+zone_id = ''
+usage_model = ''
+compatibility_flags = []
+workers_dev = true
+compatibility_date = "2022-12-27"
+
+[build]
+cwd = "./"
+watch_dir = "./"
+command = "dune build --profile=release && cp -f _build/default/main.bc.js dist/index.js"
+upload.main = "index.js"
+upload.format = "modules"
+upload.rules = [{ type = "ESModule", globs = ["**/*.js"] }]

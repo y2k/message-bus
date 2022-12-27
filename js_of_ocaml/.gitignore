@@ -1,0 +1,6 @@
+*.js
+*.out
+*.cmi
+*.cmo
+_build/
+
