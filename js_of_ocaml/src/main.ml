@@ -8,5 +8,8 @@ let response_with event body =
 
 let () =
   U.global##addEventListener "fetch" (fun event ->
-      let r = event##.request##.body in
-      response_with event r)
+      event##.request##text##then_ (fun json ->
+          print_endline @@ "JSON: " ^ json;
+          response_with event json)
+      (* let jp = event##.request##json in *)
+      (* jp##then_ (fun json -> response_with event json) *))
