@@ -2,14 +2,15 @@ name = "delete-messages-bot"
 type = "javascript"
 route = ''
 zone_id = ''
-usage_model = ''
+usage_model = 'bundled'
 compatibility_flags = []
 workers_dev = true
 compatibility_date = "2022-12-27"
+node_compat = true
 
 [build]
 command = "dune build --profile=release"
-upload.dir = "_build/default/src"
+upload.dir = "_build/default/app"
 upload.main = "main.bc.js"
 upload.format = "modules"
 upload.rules = [{ type = "ESModule", globs = ["**/*.js"] }]
