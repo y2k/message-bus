@@ -9,6 +9,7 @@ compatibility_date = "2022-12-27"
 node_compat = true
 
 [build]
+watch_dir = "app"
 command = "dune build --profile=release"
 upload.dir = "_build/default/app"
 upload.main = "main.bc.js"
