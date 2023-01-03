@@ -1,7 +1,7 @@
 module J = Yojson.Safe
 module U = Yojson.Safe.Util
 
-let handle (body : string) =
+let handle _env _headers (body : string) =
   match J.from_string body |> U.member "message" with
   | `Null ->
       None
