@@ -2,32 +2,16 @@ open Js_of_ocaml
 
 module Utils = struct
   module U = Js_of_ocaml.Js.Unsafe
+  module StringMap = Map.Make (String)
 
-  let get_headers req =
-    U.global ##. Array##from req##.headers##entries
-    |> Js.to_array
-    |> Array.map (fun x ->
-           match Js.to_array x with
-           | [|key; value|] ->
-               (Js.to_string key, Js.to_string value)
-           | _ ->
-               failwith "unreachable" )
-
-  let make_string_env env =
-    let module StringMap = Map.Make (String) in
-    env |> Js.object_keys |> Js.to_array
+  let object_to_string_map obj =
+    obj |> Js.object_keys |> Js.to_array
     |> Array.fold_left
          (fun a k ->
            if Js.typeof k = Js.string "string" then
-             StringMap.add (Js.to_string k) (U.get env k |> Js.to_string) a
-           else (
-             print_endline ("ERROR: " ^ (Js.typeof k |> Js.to_string)) ;
-             a ) )
+             StringMap.add (Js.to_string k) (U.get obj k |> Js.to_string) a
+           else a )
          StringMap.empty
-
-  let log_headers req env =
-    get_headers req |> Array.iter (fun (k, v) -> Printf.printf "%s: %s\n" k v) ;
-    print_endline ""
 
   let make_response (body : string) =
     U.new_obj U.global ##. Response [|U.inject body|]
@@ -44,16 +28,14 @@ end
 (* application/json *)
 let fetch req env =
   req##text##then_ (fun body ->
-      let url =
-        Printf.sprintf "https://api.telegram.org/bot%s/deletemessage" "<token>"
-      in
       match
         Core.handle
-          (Utils.make_string_env env)
-          (Utils.get_headers req) (Js.to_string body)
+          { env= Utils.object_to_string_map env
+          ; headers= Utils.object_to_string_map req##.headers
+          ; body= Js.to_string body }
       with
-      | Some body ->
-          let promise = Utils.post url body in
+      | Some cmd ->
+          let promise = Utils.post cmd.url cmd.body in
           promise##then_ (fun _ -> Utils.make_response "")
       | None ->
           Utils.make_response "" )
