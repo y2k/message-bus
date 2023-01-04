@@ -1,20 +1,29 @@
 module J = Yojson.Safe
 module U = Yojson.Safe.Util
-module StringMap = Map.Make (String)
+
+module StringMap = struct
+  include Map.Make (String)
+
+  let pp _ ppf m =
+    Format.fprintf ppf "{" ;
+    iter (fun k v -> Format.fprintf ppf "\"%s\": \"%s\"; " k v) m ;
+    Format.fprintf ppf "}"
+end
 
 type http_msg_props =
   {env: string StringMap.t; headers: string StringMap.t; body: string}
+[@@deriving show]
 
-type http_cmd_props = {url: string; body: string}
+type http_cmd_props = {url: string; body: string} [@@deriving show]
 
-let handle_ ({body; env; _} : http_msg_props) =
+let handle' ({body; env; _} : http_msg_props) =
   match J.from_string body |> U.member "message" with
   | `Null ->
       None
   | message ->
       if U.keys message |> List.mem "new_chat_member" then
         let url =
-          Printf.sprintf "https://api.telegram.org/bot%s/deletemessage"
+          Printf.sprintf "https://api.telegram.org/bot%s/deleteMessage"
             (StringMap.find "TG_TOKEN" env)
         in
         Some
@@ -31,10 +40,14 @@ let handle'' ({env; headers; _} as msg) =
   let st = StringMap.find_opt "S_TOKEN" env in
   match (st, hst) with
   | Some st, Some hst when st = hst ->
-      handle_ msg
+      handle' msg
   | _ ->
       None
 
 let handle (msg : http_msg_props) : http_cmd_props option =
-  let result = handle'' in
+  print_endline @@ "LOG:MSG: " ^ show_http_msg_props msg ^ "\n" ;
+  let result = handle'' msg in
+  Option.iter
+    (fun x -> print_endline @@ "LOG:CMD: " ^ show_http_cmd_props x ^ "\n")
+    result ;
   result

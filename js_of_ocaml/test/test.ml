@@ -18,7 +18,7 @@ let make_tests ?headers rules =
       let expected =
         expected
         |> Option.map (fun x ->
-               {url= "https://api.telegram.org/bot123/deletemessage"; body= x} )
+               {url= "https://api.telegram.org/bot123/deleteMessage"; body= x} )
       in
       test_case "test" `Quick (fun _ ->
           let cmd_fmt =
@@ -31,6 +31,18 @@ let make_tests ?headers rules =
             "" expected
             (Core.handle (make_msg input)) ) )
     rules
+
+module TestSample = struct
+  type t = {expected: string option; input: string; headers: string StringMap.t}
+
+  let make expected input ?headers =
+    { expected
+    ; input
+    ; headers=
+        Option.value headers
+          ~default:
+            (StringMap.singleton "x-telegram-bot-api-secret-token" "token") }
+end
 
 let samples =
   [ (None, {|{}|})
@@ -46,6 +58,9 @@ let auth =
   [ (None, {|{}|})
   ; ( None
     , {|{"update_id":569999999,"message":{"message_id":4699,"from":{"id":249999999,"is_bot":false,"first_name":"JohnDoe","username":"johndoe","language_code":"en"},"chat":{"id":249999999,"first_name":"JohnDoe","username":"johndoe","type":"private"},"date":1699999999,"text":"hello"}}|}
+    )
+  ; ( None
+    , {|{"update_id":560000000,"message":{"message_id":12000,"from":{"id":240000000,"is_bot":false,"first_name":"Alex","username":"alex000","language_code":"en"},"chat":{"id":-1001000000000,"title":"GroupName","type":"supergroup"},"date":1600000000,"new_chat_participant":{"id":1300000000,"is_bot":true,"first_name":"Docker","username":"docker_bot"},"new_chat_member":{"id":1300000000,"is_bot":true,"first_name":"Docker","username":"docker_bot"},"new_chat_members":[{"id":1300000000,"is_bot":true,"first_name":"Docker","username":"docker_bot"}]}}|}
     )
   ; ( None
     , {|{"update_id":560000000,"message":{"message_id":12000,"from":{"id":240000000,"is_bot":false,"first_name":"Alex","username":"alex000","language_code":"en"},"chat":{"id":-1001000000000,"title":"GroupName","type":"supergroup"},"date":1600000000,"new_chat_participant":{"id":1300000000,"is_bot":true,"first_name":"Docker","username":"docker_bot"},"new_chat_member":{"id":1300000000,"is_bot":true,"first_name":"Docker","username":"docker_bot"},"new_chat_members":[{"id":1300000000,"is_bot":true,"first_name":"Docker","username":"docker_bot"}]}}|}
