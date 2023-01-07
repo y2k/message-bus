@@ -1,6 +1,0 @@
-(executable
- (name main)
- (libraries core js_of_ocaml yojson)
- (modes js)
- (preprocess
-  (pps js_of_ocaml-ppx)))
